@@ -82,4 +82,14 @@ public class Nave {
 
     public static List<Nave> naves = new ArrayList<>();
 
+    public static List<Nave> filtrarNaves(String filtro) {
+        List<Nave> navesFiltradas = new ArrayList<>();
+        for(Nave nave : naves) {
+            if(nave.getModelo().contains(filtro)) {
+                navesFiltradas.add(nave);
+            }
+        }
+        return navesFiltradas;
+    }
+
 }

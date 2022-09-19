@@ -5,11 +5,13 @@ import Classes.Nave;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.List;
 
 public class ListarNaves extends JFrame implements ActionListener {
 
-    protected JLabel lModelo, lAgencia;
-    protected JButton btnRetornar;
+    protected JLabel lModelo, lAgencia, lfiltrar;
+    protected JButton btnRetornar, btnFiltrar;
+    protected JTextField tFiltrar;
     protected JList listModelo, listAgencia;
 
     public ListarNaves() {
@@ -27,7 +29,6 @@ public class ListarNaves extends JFrame implements ActionListener {
         listModelo = new JList(modeloNaves);
         listAgencia = new JList(agenciaNaves);
 
-        //JScrollPane scrollingList = new JScrollPane(list);
 
         // Cabecera
         lModelo = new JLabel("Modelo: ");
@@ -43,11 +44,11 @@ public class ListarNaves extends JFrame implements ActionListener {
 
         // Lista de Naves
         p.setSize(400, 400);
-        p.setLocation(-90, 100);
+        p.setLocation(50, 80);
 
         listModelo.setFont(new Font("Arial", Font.PLAIN, 16));
         listModelo.setSize(200, 400);
-        listModelo.setLocation(500, 800);
+        listModelo.setLocation(50, 80);
 
         listAgencia.setFont(new Font("Arial", Font.PLAIN, 16));
         listAgencia.setSize(200, 400);
@@ -62,6 +63,37 @@ public class ListarNaves extends JFrame implements ActionListener {
         btnRetornar.setSize(100, 20);
         btnRetornar.setLocation(50, 500);
         f.add(btnRetornar);
+
+        // Filtro
+        lfiltrar = new JLabel("Filtrar: ");
+        lfiltrar.setFont(new Font("Arial", Font.PLAIN, 16));
+        lfiltrar.setSize(60, 20);
+        lfiltrar.setLocation(180, 500);
+        f.add(lfiltrar);
+        tFiltrar = new JTextField();
+        tFiltrar.setFont(new Font("Arial", Font.PLAIN, 16));
+        tFiltrar.setSize(100, 20);
+        tFiltrar.setLocation(250, 500);
+        f.add(tFiltrar);
+        btnFiltrar = new JButton("Filtrar");
+        btnFiltrar.setFont(new Font("Arial", Font.PLAIN, 16));
+        btnFiltrar.setSize(100, 20);
+        btnFiltrar.setLocation(360, 500);
+        f.add(btnFiltrar);
+
+        // Funcion de filtrar
+        btnFiltrar.addActionListener(e -> {
+            String filtro = tFiltrar.getText();
+            List<Nave> navesFiltradas = Nave.filtrarNaves(filtro);
+            String[] modeloNavesFiltradas = new String[navesFiltradas.size()];
+            String[] agenciaNavesFiltradas = new String[navesFiltradas.size()];
+            for(Nave nave : navesFiltradas) {
+                modeloNavesFiltradas[navesFiltradas.indexOf(nave)] = nave.getModelo();
+                agenciaNavesFiltradas[navesFiltradas.indexOf(nave)] = nave.getAgenciaEspacial();
+            }
+            listModelo.setListData(modeloNavesFiltradas);
+            listAgencia.setListData(agenciaNavesFiltradas);
+        });
 
         // Definir los atributos del Frame
         f.setSize(800, 600);
